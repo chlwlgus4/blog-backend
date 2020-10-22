@@ -7,10 +7,10 @@ posts.get('/', postsCtrl.list);
 posts.post('/', postsCtrl.write);
 
 const post = new Router(); // /api/posts/:id
-posts.get('/', postsCtrl.checkObjectId, postsCtrl.read);
-posts.delete('/', postsCtrl.checkObjectId, postsCtrl.remove);
-posts.patch('/', postsCtrl.checkObjectId, postsCtrl.update);
+post.get('/', postsCtrl.checkObjectId, postsCtrl.read);
+post.delete('/', postsCtrl.checkObjectId, postsCtrl.remove);
+post.patch('/', postsCtrl.checkObjectId, postsCtrl.update);
 
-posts.use('/:id', postsCtrl.checkObjectId. post.routes());
+posts.use('/:id', postsCtrl.checkObjectId, post.routes());
 
 export default posts;
