@@ -17,19 +17,19 @@ export const register = async ctx => {
             .required(),
         password: Joi.string().required(),
     });
-    const result = Joi.validate(ctx.request.body, schema);
+    const result = schema.validate(ctx.request.body);
     if (result.error) {
         ctx.status = 400;
         ctx.body = result.error;
         return;
     }
 
-    const {username, password} = ctx.request.body;
+    const { username, password } = ctx.request.body;
     try {
-        // username이 이미 존재하는지 확인
+        // username  이 이미 존재하는지 확인
         const exists = await User.findByUsername(username);
         if (exists) {
-            ctx.status = 409; //conflict
+            ctx.status = 409; // Conflict
             return;
         }
 
@@ -37,9 +37,8 @@ export const register = async ctx => {
             username,
         });
         await user.setPassword(password); // 비밀번호 설정
-        await user.save; // 데이터베이스에 저장
+        await user.save(); // 데이터베이스에 저장
 
-        // 응답할 데이터에서 hashedPassword 필드 제거
         const data = user.toJSON();
         delete data.hashedPassword;
         ctx.body = user.serialize();
